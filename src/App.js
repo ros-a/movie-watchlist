@@ -1,23 +1,23 @@
-import './App.css';
+import styled, { ThemeProvider } from "styled-components";
+import GlobalStyle from './globalStyles';
+import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';import { Add } from './components/Add';
+import { Header } from './components/Header';
+import { Watched } from './components/Watched';
+import { Watchlist } from './components/Watchlist';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>      
+      <GlobalStyle />
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route element={<Watchlist/>} />
+          <Route element={<Watched/>} />
+          <Route element={<Add/>} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
