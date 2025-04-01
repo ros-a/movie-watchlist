@@ -1,21 +1,26 @@
 import { createGlobalStyle } from 'styled-components';
- 
+
 const GlobalStyle = createGlobalStyle`
+  body {
+    background: linear-gradient(#000, #347eb7);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  @font-face {
+    font-family: Cairo;
+    src: url(${require('./fonts/Cairo-SemiBold.ttf')});
+  }
   body {
     margin: 0;
     padding: 0;
-    background: teal;
     font-family: Open-Sans, Helvetica, Sans-Serif;
   }
   ul {
     padding: 0;
+    margin: 0;
   }
   li {
     list-style-type: none;
-    &:first {
-        margin-top: 0;
-        padding-top: 0;
-    }
   }
 `;
  

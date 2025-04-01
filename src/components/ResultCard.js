@@ -2,7 +2,14 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 
 const StyledResultCard = styled.div`
-
+    img {
+        border-radius: 10px;
+        width: 100%;
+        &:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+    }
 `;
 
 export const ResultCard = ({movie}) => {

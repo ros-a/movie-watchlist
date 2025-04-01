@@ -4,7 +4,7 @@ import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 import { Header } from './components/Header';
 import { Watched } from './components/Watched';
 import { Watchlist } from './components/Watchlist';
-import { Add } from "./components/Add";
+import { Discover } from "./components/Discover";
 
 function App() {
   return (
@@ -13,9 +13,9 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/" element={<Watchlist/>} />
+          <Route path="/" element={<Discover/>} />
           <Route path="watched" element={<Watched/>} />
-          <Route path="add" element={<Add/>} />
+          <Route path="watchlist" element={<Watchlist/>} />
         </Routes>
       </BrowserRouter>
     </>
