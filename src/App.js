@@ -6,9 +6,11 @@ import { Watched } from './components/Watched';
 import { Watchlist } from './components/Watchlist';
 import { Discover } from "./components/Discover";
 
+import { GlobalProvider } from "./context/GlobalState";
+
 function App() {
   return (
-    <>      
+    <GlobalProvider>      
       <GlobalStyle />
       <BrowserRouter>
         <Header />
@@ -18,7 +20,7 @@ function App() {
           <Route path="watchlist" element={<Watchlist/>} />
         </Routes>
       </BrowserRouter>
-    </>
+    </GlobalProvider>
   );
 }
 

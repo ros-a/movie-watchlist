@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components"; 
 import close from '../icons/close.svg';
+import { GlobalContext } from "../context/GlobalState";
 
 const StyledModal = styled.div`
     .modal {
@@ -47,11 +48,24 @@ const StyledModal = styled.div`
             cursor: pointer;
         }
     }
+    .add-btn {
+        background-color: #FFF;
+        color: #000;
+        border-radius: 5px;
+        border: none;
+        padding: 2px 5px;
+    }
 `;
 
 export const Modal = ({ props, closeModal }) => {
     const movieId = props.id;
     const [directorNames, setDirectorNames] = useState([]);
+    const {addMovieToWatched, watched} = useContext(GlobalContext);
+    const {addMovieToWatchlist, watchlist} = useContext(GlobalContext);
+    let storedMovieWatchlist = watchlist.find(o => o.id === movieId);
+    let storedMovieWatched = watched.find(o => o.id === movieId);
+    const watchlistDisabled = storedMovieWatchlist ? true : false;
+    const watchedDisabled = storedMovieWatched ? true : false;
     const getDirectors = () => {
         setDirectorNames([]);
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
@@ -85,8 +99,10 @@ export const Modal = ({ props, closeModal }) => {
     return (
         <StyledModal>
             <div className="modal" role="dialog">
+                <button className="add-btn" onClick={() => addMovieToWatchlist(props)} disabled={watchlistDisabled}>Add to watchlist</button>
+                <button className="add-btn" onClick={() => addMovieToWatched(props)} disabled={watchedDisabled}>Mark as watched</button>
                 <img className="close" src={close} onClick={closeModal}></img>
-                <img src={`https://image.tmdb.org/t/p/w200${props.backdrop_path}`}></img>
+                {props.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${props.backdrop_path}`}></img>}
                 <div className="text-wrapper">
                     <h2>{props.title}</h2>
                     {props.title !== props.original_title && (

@@ -1,36 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { ResultCard } from "./ResultCard";
 import Select from 'react-dropdown-select';
 import { Modal } from "./Modal";
+import { MovieList } from "./MovieList";
 
 const StyledAdd = styled.div `
     padding-bottom: 50px;
-    .movie-list {
-        display: flex;
-        flex-wrap: wrap;
-        width: min-content;
-        margin: 0 auto;
-        row-gap: 15px;
-        column-gap: 20px;
-        width: 90%;
-        max-width: 1200px;
-        li {
-            width: calc(50% - 10px);
-            &:only-child {
-                margin: 0 auto;
-            }
-            @media screen and (min-width: 500px) {
-                width: calc((100% / 3) - (40px / 3));
-            }
-            @media screen and (min-width: 800px) {
-                width: calc((100% / 4) - (60px / 4));
-            }
-            @media screen and (min-width: 1000px) {
-                width: calc((100% / 5) - (80px / 5));
-            }
-        }
-    }
     .input-wrapper {
         display: flex;
         justify-content: center;
@@ -133,19 +108,10 @@ export const Discover = () => {
     const [query, setQuery] = useState("");
     const [movies, setMovies]= useState([]);
     const [selectValue, setSelectValue] = useState('');
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [clickedMovie, setClickedMovie] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
     const currentYear = new Date().getFullYear();
-    const handleClick = (movie) => {
-        setModalIsOpen(true);
-        setClickedMovie(movie);
-    }
-    const closeModal = () => {
-        console.log('now clsign');
-        setModalIsOpen(false);
-    }
+
     const getMovies = () => {
         let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
         if (selectValue && selectValue !== 'any year') {
@@ -204,25 +170,13 @@ export const Discover = () => {
                         >
                         </Select>
                     </div>
-                    {movies.length > 0 && (
-                        <ul className="movie-list">
-                            {movies.map((movie) => (
-                                <li key={movie.id} onClick={() => handleClick(movie)}>
-                                    <ResultCard movie={movie}/>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    {movies.length && (
+                        <MovieList movies={movies}></MovieList>
+                    )}                    
                     {(totalPages > 1 && currentPage !== totalPages) && (
                             <button className="load-more" onClick={() => handleLoadMore()}>LOAD MORE</button>
                     )}
-                    {modalIsOpen && (
-                        <div>
-                            <h1>test test test test</h1>
-                            <Modal props={clickedMovie} closeModal={closeModal}/>
-                            <div className="blur"></div>
-                        </div>
-                    )}
+
                 </div>
             </div>
         </StyledAdd>

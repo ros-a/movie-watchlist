@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 
-const StyledResultCard = styled.div`
+const StyledMovieCard = styled.div`
     height: 100%;
     img {
         border-radius: 10px;
@@ -24,9 +24,9 @@ const StyledResultCard = styled.div`
     }
 `;
 
-export const ResultCard = ({movie}) => {
+export const MovieCard = ({movie}) => {
     return (
-        <StyledResultCard>
+        <StyledMovieCard>
             {movie.poster_path ? (
                 <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
                 alt={`${movie.title} Poster`}/>
@@ -36,6 +36,6 @@ export const ResultCard = ({movie}) => {
                 </div>
             )
             }
-        </StyledResultCard>
+        </StyledMovieCard>
     )
 }
