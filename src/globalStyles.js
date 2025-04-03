@@ -6,6 +6,9 @@ const GlobalStyle = createGlobalStyle`
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
+  body:has(.modal) {
+    overflow: hidden;
+  }
   @font-face {
     font-family: Cairo;
     src: url(${require('./fonts/Cairo-SemiBold.ttf')});

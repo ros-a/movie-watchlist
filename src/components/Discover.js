@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { ResultCard } from "./ResultCard";
-import next from '../icons/next.svg';
-import previous from '../icons/previous.svg';
 import Select from 'react-dropdown-select';
-import { PopUp } from "./PopUp";
+import { Modal } from "./Modal";
 
 const StyledAdd = styled.div `
-    filter: ${ (popupState) => popupState.open ? "blur(2px)" : "blur(0)"};
+    padding-bottom: 50px;
     .movie-list {
         display: flex;
         flex-wrap: wrap;
@@ -16,10 +14,20 @@ const StyledAdd = styled.div `
         row-gap: 15px;
         column-gap: 20px;
         width: 90%;
+        max-width: 1200px;
         li {
             width: calc(50% - 10px);
             &:only-child {
                 margin: 0 auto;
+            }
+            @media screen and (min-width: 500px) {
+                width: calc((100% / 3) - (40px / 3));
+            }
+            @media screen and (min-width: 800px) {
+                width: calc((100% / 4) - (60px / 4));
+            }
+            @media screen and (min-width: 1000px) {
+                width: calc((100% / 5) - (80px / 5));
             }
         }
     }
@@ -50,7 +58,7 @@ const StyledAdd = styled.div `
     }
     .select {
         width: 180px;
-        margin: 40px auto;
+        margin: 45px auto 30px;
         color: #FFF;
         position: relative;
         input {
@@ -89,43 +97,97 @@ const StyledAdd = styled.div `
             border: none;
         }
     }
+    .load-more {
+        font-family: Cairo;
+        border: none;
+        background-color: #FFF;
+        border-radius: 5px;
+        height: 50px;
+        width: 130px;
+        font-size: 15px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 40px 0 50px;
+        @media screen and (min-width: 1000px) {
+            font-size: 20px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .blur {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(3px);
+        transition: transform .5s ease;
+        background-color: rgba(0, 0, 0, 0.3);
+
+    }
 `;
 
 export const Discover = () => {
     const [query, setQuery] = useState("");
     const [movies, setMovies]= useState([]);
     const [selectValue, setSelectValue] = useState('');
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [clickedMovie, setClickedMovie] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1)
     const currentYear = new Date().getFullYear();
-    const [popupState, setPopupState] = useState({ open: false });
-    const [clickedMovie, setClickedMovie] = useState({})
-    const rangeOfDecades = () => {
-        const decades = ['1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
-        return decades.map((x) => {
-            const startYear = x.slice(0, -1);
-            const endYear = (Number(startYear) + 9).toString();
-            return x = ({label: x, value: `${startYear}-${endYear}`})
-        })
-        // .unshift(({label: 'any year', value: 'any year'}));
-    };
     const handleClick = (movie) => {
-        setPopupState({ open: true});
+        setModalIsOpen(true);
         setClickedMovie(movie);
     }
+    const closeModal = () => {
+        console.log('now clsign');
+        setModalIsOpen(false);
+    }
     const getMovies = () => {
-        let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=1`
-        if (selectValue) {
+        let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
+        if (selectValue && selectValue !== 'any year') {
             const startYear = selectValue.split('-')[0].trim();
             const endYear = selectValue.split('-')[1].trim();
-            console.log('start', startYear, 'end', endYear);
             url += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`
         }
+        console.log(url);
         fetch(url)
         .then((res) => res.json())
         .then((data) => {
-            !data.errors ? setMovies(data.results) : setMovies = [];
+            if (!data.errors) {
+                setMovies(movies.concat(data.results));
+                setTotalPages(data.total_pages);
+            } else {
+                setMovies = [];
+            }
         })
     };
+    const selectOptions = () => {
+        const decades = ['1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
+        let selectOptions = decades.map((x) => {
+            const startYear = x.slice(0, -1);
+            const endYear = (Number(startYear) + 9).toString();
+            return x = ({label: x, value: `${startYear}-${endYear}`})
+        });
+        return selectOptions;
+        // console.log('l', [{label: 'any year', value: 'any year'}].concat(selectOptions));
+    }
+    const handleSelectChange = (selectValue) => {
+        setSelectValue(selectValue[0].value);
+        setCurrentPage(1);
+        setMovies([]);
+    }
+    const handleLoadMore = () => {
+        console.log('handle load more');
+        setCurrentPage(current=>current+1);
+        console.log('page current', currentPage);
+        getMovies();
+    }
     useEffect(() => {
+        setMovies([]);
         getMovies();
     }, [selectValue])
     return (
@@ -134,10 +196,10 @@ export const Discover = () => {
                 <div className="inner-wrapper">
                     <div className="select">
                         <Select
-                            options={rangeOfDecades()}
+                            options={selectOptions()}
                             labelField="label"
                             valueField="value"
-                            onChange={selectValue => setSelectValue(selectValue[0].value)}
+                            onChange={selectValue => handleSelectChange(selectValue)}
                             placeholder="discover by decade"
                         >
                         </Select>
@@ -151,11 +213,16 @@ export const Discover = () => {
                             ))}
                         </ul>
                     )}
-                    <div className="arrow-container">
-                        <img src={previous} alt="previous"/>
-                        <img src={next} alt="next" />
-                    </div>
-                    {popupState.open === true && <PopUp props={clickedMovie}/>}
+                    {(totalPages > 1 && currentPage !== totalPages) && (
+                            <button className="load-more" onClick={() => handleLoadMore()}>LOAD MORE</button>
+                    )}
+                    {modalIsOpen && (
+                        <div>
+                            <h1>test test test test</h1>
+                            <Modal props={clickedMovie} closeModal={closeModal}/>
+                            <div className="blur"></div>
+                        </div>
+                    )}
                 </div>
             </div>
         </StyledAdd>
