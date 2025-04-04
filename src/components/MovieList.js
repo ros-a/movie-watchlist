@@ -56,8 +56,7 @@ export const MovieList = ({ movies }) => {
                 </ul>
                 {modalIsOpen && (
                     <div>
-                        <h1>test test test test</h1>
-                        <Modal props={clickedMovie} closeModal={closeModal}/>
+                        <Modal movie={clickedMovie} closeModal={closeModal}/>
                         <div className="blur"></div>
                     </div>
                 )}

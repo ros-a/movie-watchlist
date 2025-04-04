@@ -32,7 +32,7 @@ export const MovieCard = ({movie}) => {
                 alt={`${movie.title} Poster`}/>
             ) : (
                 <div className="movie-without-image">
-                    <div>{movie.title} ({movie.release_date.split('-')[0]})</div>
+                    <div>{movie.title} ({movie.release_date?.split('-')[0]})</div>
                 </div>
             )
             }

@@ -23,14 +23,19 @@ const StyledHeader = styled.div`
         height: 190px;
         overflow: hidden;
         z-index: -1;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        display: flex;
         @media screen and (min-width: 900px) {
             height: 260px;
         }
         img {
             position: relative;
-            top: -30%; 
             filter: brightness(60%);
-            width: 100%;
+            object-fit: cover;
+            min-height: 100%;
+            min-width: 100%;
         }
     }
     .image-wrapper::after{
@@ -44,7 +49,6 @@ const StyledHeader = styled.div`
         left: 0;
         @media screen and (min-width: 900px) {
             background: linear-gradient(to top, #142d43 0%,rgba(20,45,67,0) 60%)
-            // background: linear-gradient(0deg, #142d43 20%, rgba(255,255,255,0) 60%);
         }
       }
     ul {
@@ -74,26 +78,34 @@ const StyledHeader = styled.div`
             }
         }
     }
+    .image-source {
+        position: fixed;
+        left: 10px;
+        top: 10px;
+        color: #ebeb12;
+        writing-mode: sideways-lr;
+        font-size: 9px;
+    }
 
 `;
 
 export const Header = () => {
     const randomImage = imageList[Math.floor(Math.random() * imageList.length)];
     const imageName = randomImage.split(".");
-    console.log(imageName);
+    const randomImageSource = randomImage.split("/").pop().split('.')[0];
     return (
         <StyledHeader>
             <div className="container">
                 <div className="image-wrapper">
                     <img src={randomImage} />
-                    <span className="image-source">{randomImage.Header}</span>
+                    <span className="image-source">{randomImageSource}</span>
                 </div>
                     <ul className="nav-links">
                     <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>discover</NavLink>
                     <NavLink to="/watched" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>watched</NavLink>
                     <NavLink to="/watchlist" className={({ isActive }) => (isActive ? 'active' : 'inactive')}>watchlist</NavLink>
                 </ul>
-                <h1>EXPLORE THE <span>STRANGE</span></h1>
+                <h1>EXPLORE THE STRANGE</h1>
             </div>
         </StyledHeader>
     )

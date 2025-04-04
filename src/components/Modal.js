@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components"; 
 import close from '../icons/close.svg';
-import { GlobalContext } from "../context/GlobalState";
+import { useLocation } from "react-router-dom";
+import { MovieControls } from "./MovieControls";
+
 
 const StyledModal = styled.div`
     .modal {
@@ -48,24 +50,31 @@ const StyledModal = styled.div`
             cursor: pointer;
         }
     }
+    .btn-container {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        display: flex;
+        gap: 10px;
+    }
     .add-btn {
         background-color: #FFF;
         color: #000;
         border-radius: 5px;
         border: none;
         padding: 2px 5px;
+        &:disabled {
+            background-color: #c7c7c7;
+            color: #808080;
+        }
     }
 `;
 
-export const Modal = ({ props, closeModal }) => {
-    const movieId = props.id;
+export const Modal = ({ movie, closeModal }) => {
+    const movieId = movie.id;
     const [directorNames, setDirectorNames] = useState([]);
-    const {addMovieToWatched, watched} = useContext(GlobalContext);
-    const {addMovieToWatchlist, watchlist} = useContext(GlobalContext);
-    let storedMovieWatchlist = watchlist.find(o => o.id === movieId);
-    let storedMovieWatched = watched.find(o => o.id === movieId);
-    const watchlistDisabled = storedMovieWatchlist ? true : false;
-    const watchedDisabled = storedMovieWatched ? true : false;
+    let location = useLocation();
+
     const getDirectors = () => {
         setDirectorNames([]);
         const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
@@ -78,7 +87,6 @@ export const Modal = ({ props, closeModal }) => {
                 let directorNames = [];
                 directors.forEach(director => directorNames.push(director.name));
                 setDirectorNames(directorNames);
-                console.log(directorNames);
             } else {
                 return [];
             } 
@@ -95,18 +103,17 @@ export const Modal = ({ props, closeModal }) => {
     }, []) 
       useEffect(() => {
         getDirectors();
-    }, [props])
+    }, [movie])
     return (
         <StyledModal>
             <div className="modal" role="dialog">
-                <button className="add-btn" onClick={() => addMovieToWatchlist(props)} disabled={watchlistDisabled}>Add to watchlist</button>
-                <button className="add-btn" onClick={() => addMovieToWatched(props)} disabled={watchedDisabled}>Mark as watched</button>
+                <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
                 <img className="close" src={close} onClick={closeModal}></img>
-                {props.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${props.backdrop_path}`}></img>}
+                {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
                 <div className="text-wrapper">
-                    <h2>{props.title}</h2>
-                    {props.title !== props.original_title && (
-                        <div className="original-title">Original title: {props.original_title}</div>
+                    <h2>{movie.title}</h2>
+                    {movie.title !== movie.original_title && (
+                        <div className="original-title">Original title: {movie.original_title}</div>
                     )}
                     <div className="directors">
                         {directorNames.length === 1 && (
@@ -116,8 +123,8 @@ export const Modal = ({ props, closeModal }) => {
                             <div>Directors: {directorNames.join(', ')}</div>
                         )} 
                     </div>
-                    <div className="release-year">Release year: {props.release_date.split('-')[0]}</div>
-                    <div className="description">{props.overview}</div>
+                    <div className="release-year">Release year: {movie.release_date.split('-')[0]}</div>
+                    <div className="description">{movie.overview}</div>
                 </div>
             </div>
         </StyledModal>

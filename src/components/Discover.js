@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import Select from 'react-dropdown-select';
-import { Modal } from "./Modal";
 import { MovieList } from "./MovieList";
 
 const StyledAdd = styled.div `
@@ -105,21 +104,18 @@ const StyledAdd = styled.div `
 `;
 
 export const Discover = () => {
-    const [query, setQuery] = useState("");
     const [movies, setMovies]= useState([]);
     const [selectValue, setSelectValue] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
-    const currentYear = new Date().getFullYear();
 
     const getMovies = () => {
         let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
-        if (selectValue && selectValue !== 'any year') {
+        if (selectValue && selectValue !== 'any decade') {
             const startYear = selectValue.split('-')[0].trim();
             const endYear = selectValue.split('-')[1].trim();
             url += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`
         }
-        console.log(url);
         fetch(url)
         .then((res) => res.json())
         .then((data) => {
@@ -131,6 +127,7 @@ export const Discover = () => {
             }
         })
     };
+
     const selectOptions = () => {
         const decades = ['1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
         let selectOptions = decades.map((x) => {
@@ -138,24 +135,23 @@ export const Discover = () => {
             const endYear = (Number(startYear) + 9).toString();
             return x = ({label: x, value: `${startYear}-${endYear}`})
         });
-        return selectOptions;
-        // console.log('l', [{label: 'any year', value: 'any year'}].concat(selectOptions));
+        return [{label: 'any decade', value: 'any decade'}].concat(selectOptions);
     }
+
     const handleSelectChange = (selectValue) => {
         setSelectValue(selectValue[0].value);
         setCurrentPage(1);
         setMovies([]);
     }
     const handleLoadMore = () => {
-        console.log('handle load more');
         setCurrentPage(current=>current+1);
-        console.log('page current', currentPage);
         getMovies();
     }
     useEffect(() => {
         setMovies([]);
         getMovies();
     }, [selectValue])
+
     return (
         <StyledAdd>
             <div className="container">
