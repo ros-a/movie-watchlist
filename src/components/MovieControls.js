@@ -5,8 +5,15 @@ import { useLocation } from "react-router-dom";
 
 
 const StyledMovieControls = styled.div` 
-
-
+    .ctrl-btn {
+        cursor: pointer;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 7px;
+        &:disabled {
+            cursor: auto;
+        }
+    }
 `;
 
 export const MovieControls = ({ movie, closeModal }) => {
@@ -38,19 +45,19 @@ export const MovieControls = ({ movie, closeModal }) => {
                 <div className="btn-container">
                     {location.pathname === '/' && (
                         <>
-                            <button className="add-btn" onClick={() => addToWatchlist(movie)} disabled={storedInWatched || storedInWatchlist}>Add to watchlist</button>
-                            <button className="add-btn" onClick={() => addToWatched(movie)} disabled={storedInWatched || storedInWatchlist}>Mark as watched</button>
+                            <button className="ctrl-btn" onClick={() => addToWatchlist(movie)} disabled={storedInWatched || storedInWatchlist}>Add to watchlist</button>
+                            <button className="ctrl-btn" onClick={() => addToWatched(movie)} disabled={storedInWatched || storedInWatchlist}>Mark as watched</button>
                         </>
                     )}
                     {location.pathname === '/watched' && (
                         <>
-                            <button className="add-btn" onClick={() => handleRemoveFromWatched(movie.id)}>Remove from watched</button>
+                            <button className="ctrl-btn" onClick={() => handleRemoveFromWatched(movie.id)}>Remove from watched</button>
                         </>                    
                     )}
                     {location.pathname === '/watchlist' && (
                         <>
-                            <button className="add-btn" onClick={() => handleRemoveFromWatchlist(movie.id)}>Remove from watchlist</button>
-                            <button className="add-btn" onClick={() => handleAddToWatched(movie)}>Mark as watched</button>
+                            <button className="ctrl-btn" onClick={() => handleRemoveFromWatchlist(movie.id)}>Remove from watchlist</button>
+                            <button className="ctrl-btn" onClick={() => handleAddToWatched(movie)}>Mark as watched</button>
                         </>
                     )}
                 </div>

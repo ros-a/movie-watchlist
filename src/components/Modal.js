@@ -37,6 +37,9 @@ const StyledModal = styled.div`
         width: 100%;
         border-radius: 10px 10px 0 0;
     }
+    .image-wrapper {
+        min-height: 40px;
+    }
     .close {
         position: absolute;
         background-color: #000;
@@ -109,7 +112,9 @@ export const Modal = ({ movie, closeModal }) => {
             <div className="modal" role="dialog">
                 <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
                 <img className="close" src={close} onClick={closeModal}></img>
-                {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
+                <div className="image-wrapper">
+                    {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
+                </div>
                 <div className="text-wrapper">
                     <h2>{movie.title}</h2>
                     {movie.title !== movie.original_title && (
