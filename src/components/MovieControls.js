@@ -5,13 +5,26 @@ import { useLocation } from "react-router-dom";
 
 
 const StyledMovieControls = styled.div` 
+    .btn-container {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
     .ctrl-btn {
+        font-family: Cairo;
         cursor: pointer;
         border: none;
         padding: 5px 10px;
         border-radius: 7px;
+        background-color: #132c3f;
+        color: #FFF;
         &:disabled {
             cursor: auto;
+            background-color: #7b7f83;
+            color: #c4c4c4;
         }
     }
 `;

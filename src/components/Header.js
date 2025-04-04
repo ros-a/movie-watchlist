@@ -79,6 +79,7 @@ const StyledHeader = styled.div`
         }
     }
     .image-source {
+        font-family: Cairo;
         position: fixed;
         left: 10px;
         top: 10px;

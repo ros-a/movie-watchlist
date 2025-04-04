@@ -6,6 +6,9 @@ import { MovieControls } from "./MovieControls";
 
 
 const StyledModal = styled.div`
+    .modal-header {
+        position: relative;
+    }
     .modal {
         background-color: #132c3f;
         position: fixed;
@@ -23,6 +26,7 @@ const StyledModal = styled.div`
     h2 {
         margin: 0;
         font-family: Cairo;
+        color: #ebeb12;;
     }
     .original-title, .directors, .release-year, .description {
         font-size: 14px;
@@ -42,33 +46,15 @@ const StyledModal = styled.div`
     }
     .close {
         position: absolute;
-        background-color: #000;
+        background-color: #132c3f;
         top: 10px;
         right: 10px;
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         padding: 2px;
         border-radius: 50%;
         &:hover {
             cursor: pointer;
-        }
-    }
-    .btn-container {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        display: flex;
-        gap: 10px;
-    }
-    .add-btn {
-        background-color: #FFF;
-        color: #000;
-        border-radius: 5px;
-        border: none;
-        padding: 2px 5px;
-        &:disabled {
-            background-color: #c7c7c7;
-            color: #808080;
         }
     }
 `;
@@ -110,10 +96,12 @@ export const Modal = ({ movie, closeModal }) => {
     return (
         <StyledModal>
             <div className="modal" role="dialog">
-                <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
-                <img className="close" src={close} onClick={closeModal}></img>
-                <div className="image-wrapper">
-                    {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
+                <div class="modal-header">
+                    <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
+                    <img className="close" src={close} onClick={closeModal}></img>
+                    <div className="image-wrapper">
+                        {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
+                    </div>
                 </div>
                 <div className="text-wrapper">
                     <h2>{movie.title}</h2>
