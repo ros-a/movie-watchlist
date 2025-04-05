@@ -110,6 +110,7 @@ export const Discover = () => {
     const [totalPages, setTotalPages] = useState(1)
 
     const getMovies = () => {
+        console.log('now getting movies with page', currentPage);
         let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
         if (selectValue && selectValue !== 'any decade') {
             const startYear = selectValue.split('-')[0].trim();
@@ -122,6 +123,9 @@ export const Discover = () => {
             if (!data.errors) {
                 setMovies(movies.concat(data.results));
                 setTotalPages(data.total_pages);
+                console.log('new movies are', data.results);
+                console.log('total pages are', data.total_pages);
+
 
             } else {
                 setMovies = [];

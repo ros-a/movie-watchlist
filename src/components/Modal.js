@@ -8,6 +8,7 @@ import { MovieControls } from "./MovieControls";
 const StyledModal = styled.div`
     .modal-header {
         position: relative;
+        min-height: 100px;
     }
     .modal {
         background-color: #132c3f;
@@ -59,6 +60,11 @@ const StyledModal = styled.div`
             cursor: pointer;
         }
     }
+    .modal-header:not(:has(.modal-image)) {
+        button {
+            border: 0.1px solid #FFF;
+        }
+    }
 `;
 
 export const Modal = ({ movie, closeModal }) => {
@@ -102,7 +108,7 @@ export const Modal = ({ movie, closeModal }) => {
                     <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
                     <img className="close" src={close} onClick={closeModal}></img>
                     <div className="image-wrapper">
-                        {movie.backdrop_path && <img src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
+                        {movie.backdrop_path && <img className="modal-image" src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}></img>}
                     </div>
                 </div>
                 <div className="text-wrapper">

@@ -16,8 +16,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Discover/>} />
-          <Route path="watched" element={<Watched/>} />
           <Route path="watchlist" element={<Watchlist/>} />
+          <Route path="watched" element={<Watched/>} />
         </Routes>
       </BrowserRouter>
     </GlobalProvider>
