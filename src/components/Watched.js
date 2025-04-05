@@ -15,7 +15,7 @@ const StyledWatched = styled.div`
 `;
 
 export const Watched = () => {
-    const {watched} = useContext(GlobalContext);
+    const { watched} = useContext(GlobalContext);
     return (
         <StyledWatched>
             { watched.length ? 

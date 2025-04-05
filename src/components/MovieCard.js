@@ -24,15 +24,15 @@ const StyledMovieCard = styled.div`
     }
 `;
 
-export const MovieCard = ({movie}) => {
+export const MovieCard = ({ movie: { title, poster_path, release_date } }) => {
     return (
         <StyledMovieCard>
-            {movie.poster_path ? (
-                <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} 
-                alt={`${movie.title} Poster`}/>
+            {poster_path ? (
+                <img src={`https://image.tmdb.org/t/p/w200${poster_path}`} 
+                alt={`${title} Poster`}/>
             ) : (
                 <div className="movie-without-image">
-                    <div>{movie.title} ({movie.release_date?.split('-')[0]})</div>
+                    <div>{title} ({release_date?.split('-')[0]})</div>
                 </div>
             )
             }
