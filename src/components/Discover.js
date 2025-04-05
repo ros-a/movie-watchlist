@@ -122,6 +122,7 @@ export const Discover = () => {
             if (!data.errors) {
                 setMovies(movies.concat(data.results));
                 setTotalPages(data.total_pages);
+
             } else {
                 setMovies = [];
             }
@@ -138,20 +139,24 @@ export const Discover = () => {
         return [{label: 'any decade', value: 'any decade'}].concat(selectOptions);
     }
 
+
     const handleSelectChange = (selectValue) => {
         setSelectValue(selectValue[0].value);
         setCurrentPage(1);
         setMovies([]);
     }
-    const handleLoadMore = () => {
-        setCurrentPage(current=>current+1);
-        getMovies();
-    }
-    useEffect(() => {
-        setMovies([]);
-        getMovies();
-    }, [selectValue])
 
+    const handleLoadMore = () => {
+        setCurrentPage(current => current + 1);
+    }
+
+    useEffect(() => {
+        getMovies();
+    }, []);
+
+    useEffect(() => {
+        getMovies();
+    }, [selectValue, currentPage]);
     return (
         <StyledAdd>
             <div className="container">
@@ -170,7 +175,7 @@ export const Discover = () => {
                         <MovieList movies={movies}></MovieList>
                     )}                    
                     {(totalPages > 1 && currentPage !== totalPages) && (
-                            <button className="load-more" onClick={() => handleLoadMore()}>LOAD MORE</button>
+                            <button className="load-more" onClick={handleLoadMore}>LOAD MORE</button>
                     )}
 
                 </div>

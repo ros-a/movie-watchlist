@@ -80,7 +80,7 @@ const StyledHeader = styled.div`
     }
     .image-source {
         font-family: Cairo;
-        position: fixed;
+        position: absolute;
         left: 10px;
         top: 10px;
         color: #ebeb12;
