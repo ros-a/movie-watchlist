@@ -20,6 +20,7 @@ const StyledMovieControls = styled.div`
             left: -10px;
             background-color: #707070;
             border-radius: 5px 0 5px;
+            padding: 5px 7px;
         }
         button {
             font-family: Cairo;
