@@ -5,26 +5,31 @@ import { useLocation } from "react-router-dom";
 
 
 const StyledMovieControls = styled.div` 
-    .btn-container {
+    .button-container {
         display: flex;
         flex-direction: column;
         gap: 7px;
         position: absolute;
         top: 10px;
-        left: 10px;
-    }
-    .ctrl-btn {
-        font-family: Cairo;
-        cursor: pointer;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 7px;
-        background-color: #132c3f;
-        color: #FFF;
-        &:disabled {
-            cursor: auto;
-            background-color: #7b7f83;
-            color: #c4c4c4;
+        left: 10px; 
+        span {
+            font-size: 13px;
+            font-family: Cairo;
+            position: relative;
+            top: -10px;
+            left: -10px;
+            background-color: #707070;
+            border-radius: 5px 0 5px;
+        }
+        button {
+            font-family: Cairo;
+            cursor: pointer;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 7px;
+            background-color: #132c3f;
+            color: #FFF;
+            font-size: 13px;
         }
     }
 `;
@@ -55,22 +60,29 @@ export const MovieControls = ({ movie, closeModal }) => {
 
     return (
         <StyledMovieControls>
-                <div className="btn-container">
+                <div className="button-container">
                     {location.pathname === '/' && (
                         <>
-                            <button className="ctrl-btn" onClick={() => addToWatchlist(movie)} disabled={storedInWatched || storedInWatchlist}>Add to watchlist</button>
-                            <button className="ctrl-btn" onClick={() => addToWatched(movie)} disabled={storedInWatched || storedInWatchlist}>Mark as watched</button>
+                            {!storedInWatched && !storedInWatchlist ? (
+                                <>
+                                    <button onClick={() => addToWatchlist(movie)}>Add to watchlist</button>
+                                    <button onClick={() => addToWatched(movie)}>Mark as watched</button>
+                                </>
+                            ) : (
+                                <span>Currently in {storedInWatchlist ? 'watchlist' : 'watched'}</span>
+                            )
+                        }
                         </>
                     )}
                     {location.pathname === '/watched' && (
                         <>
-                            <button className="ctrl-btn" onClick={() => handleRemoveFromWatched(movie.id)}>Remove from watched</button>
+                            <button onClick={() => handleRemoveFromWatched(movie.id)}>Remove from watched</button>
                         </>                    
                     )}
                     {location.pathname === '/watchlist' && (
                         <>
-                            <button className="ctrl-btn" onClick={() => handleRemoveFromWatchlist(movie.id)}>Remove from watchlist</button>
-                            <button className="ctrl-btn" onClick={() => handleAddToWatched(movie)}>Mark as watched</button>
+                            <button onClick={() => handleRemoveFromWatchlist(movie.id)}>Remove from watchlist</button>
+                            <button onClick={() => handleAddToWatched(movie)}>Mark as watched</button>
                         </>
                     )}
                 </div>

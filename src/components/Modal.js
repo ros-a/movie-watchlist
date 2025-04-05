@@ -26,7 +26,9 @@ const StyledModal = styled.div`
     h2 {
         margin: 0;
         font-family: Cairo;
-        color: #ebeb12;;
+        color: #ebeb12;
+        line-height: 30px;
+        padding-bottom: 10px;
     }
     .original-title, .directors, .release-year, .description {
         font-size: 14px;
