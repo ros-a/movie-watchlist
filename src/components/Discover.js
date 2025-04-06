@@ -141,7 +141,7 @@ export const Discover = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (!data.errors) {
-                    setMovies(movies.concat(data.results));
+                    setMovies(current => ([ ...current, ...data.results ]));
                     setTotalPages(data.total_pages);
                 } else {
                     setMovies([]);

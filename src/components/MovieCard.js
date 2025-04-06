@@ -14,6 +14,7 @@ const StyledMovieCard = styled.div`
     }
     .movie-without-image {
         height: 100%;
+        min-height: 250px;
         display: flex;
         align-items: center;
         justify-content: center;

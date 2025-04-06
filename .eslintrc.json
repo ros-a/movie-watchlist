@@ -11,6 +11,10 @@
         "jsx": true
       }
     },
+    "globals": {
+      "$": true,
+      "require": true
+    },
     "plugins": ["react", "react-hooks"],
     "rules": {
       "react/prop-types": 0
