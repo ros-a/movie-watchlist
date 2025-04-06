@@ -1,6 +1,6 @@
-import styled, { ThemeProvider } from "styled-components";
+import React from "react";
 import GlobalStyle from './globalStyles';
-import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { Header } from './components/Header';
 import { Watched } from './components/Watched';
 import { Watchlist } from './components/Watchlist';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 import Select from 'react-dropdown-select';
 import { MovieList } from "./MovieList";
 
@@ -109,25 +109,6 @@ export const Discover = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
 
-    const getMovies = () => {
-        let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
-        if (selectValue && selectValue !== 'any decade') {
-            const startYear = selectValue.split('-')[0].trim();
-            const endYear = selectValue.split('-')[1].trim();
-            url += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`
-        }
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            if (!data.errors) {
-                setMovies(movies.concat(data.results));
-                setTotalPages(data.total_pages);
-            } else {
-                setMovies = [];
-            }
-        })
-    };
-
     const selectOptions = () => {
         const decades = ['1920s', '1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s'];
         let selectOptions = decades.map((x) => {
@@ -137,7 +118,6 @@ export const Discover = () => {
         });
         return [{label: 'any decade', value: 'any decade'}].concat(selectOptions);
     }
-
 
     const handleSelectChange = (selectValue) => {
         setSelectValue(selectValue[0].value);
@@ -150,10 +130,24 @@ export const Discover = () => {
     }
 
     useEffect(() => {
-        getMovies();
-    }, []);
-
-    useEffect(() => {
+        const getMovies = () => {
+            let url = `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_TMDB_KEY}&with_keywords=3307&include_adult=false&language=en-US&page=${currentPage}`
+            if (selectValue && selectValue !== 'any decade') {
+                const startYear = selectValue.split('-')[0].trim();
+                const endYear = selectValue.split('-')[1].trim();
+                url += `&primary_release_date.gte=${startYear}-01-01&primary_release_date.lte=${endYear}-12-31`
+            }
+            fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+                if (!data.errors) {
+                    setMovies(movies.concat(data.results));
+                    setTotalPages(data.total_pages);
+                } else {
+                    setMovies([]);
+                }
+            })
+        };
         getMovies();
     }, [selectValue, currentPage]);
     return (

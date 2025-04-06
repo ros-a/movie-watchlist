@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 
 const StyledMovieCard = styled.div`
     height: 100%;

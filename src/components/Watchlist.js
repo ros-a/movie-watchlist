@@ -21,7 +21,7 @@ export const Watchlist = () => {
             { watchlist.length ? 
                 <><h2>Movies in your watchlist</h2> 
                 <MovieList movies={watchlist}></MovieList></>
-                : <h2>You don't have any movies in your watchlist yet. Go ahead and add some.</h2>
+                : <h2>You don&apos;t have any movies in your watchlist yet. Go ahead and add some.</h2>
             }; 
         </StyledWatchlist>
     )

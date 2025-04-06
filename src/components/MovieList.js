@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import {NavLink} from 'react-router-dom'
-import styled, { ThemeProvider } from "styled-components"; 
+import styled from "styled-components"; 
 import { MovieCard } from "./MovieCard";
 import { Modal } from "./Modal";
 

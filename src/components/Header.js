@@ -1,6 +1,6 @@
 import React from "react";
 import {NavLink} from 'react-router-dom'
-import styled, { ThemeProvider } from "styled-components"; 
+import styled from "styled-components"; 
 const images = require.context('../images', true);
 const imageList = images.keys().map(image => images(image));
 
@@ -92,7 +92,6 @@ const StyledHeader = styled.div`
 
 export const Header = () => {
     const randomImage = imageList[Math.floor(Math.random() * imageList.length)];
-    const imageName = randomImage.split(".");
     const randomImageSource = randomImage.split("/").pop().split('.')[0];
     return (
         <StyledHeader>

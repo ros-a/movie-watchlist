@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 
 import { GlobalContext } from "../context/GlobalState";
 import { MovieList } from "./MovieList";
@@ -21,7 +21,7 @@ export const Watched = () => {
             { watched.length ? 
                 <><h2>Movies you have watched</h2> 
                 <MovieList movies={watched}></MovieList></>
-                : <h2>You haven't watched any movies yet. Go ahead and add some.</h2>
+                : <h2>You haven&apos;t watched any movies yet. Go ahead and add some.</h2>
             }; 
         </StyledWatched>
     )

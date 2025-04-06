@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components"; 
 import close from '../icons/close.svg';
-import { useLocation } from "react-router-dom";
 import { MovieControls } from "./MovieControls";
-
 
 const StyledModal = styled.div`
     .modal-header {
@@ -67,28 +65,9 @@ const StyledModal = styled.div`
     }
 `;
 
-export const Modal = ({ movie, closeModal }) => {
-    const movieId = movie.id;
+export const Modal = ( { movie, closeModal } ) => {
     const [directorNames, setDirectorNames] = useState([]);
-    let location = useLocation();
 
-    const getDirectors = () => {
-        setDirectorNames([]);
-        const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            if (!data.errors) {
-                const crew = data.crew;
-                const directors = crew.filter((crew) => crew.job === 'Director');
-                let directorNames = [];
-                directors.forEach(director => directorNames.push(director.name));
-                setDirectorNames(directorNames);
-            } else {
-                return [];
-            } 
-        })
-    }
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === "Escape") closeModal();
@@ -97,14 +76,32 @@ export const Modal = ({ movie, closeModal }) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, []) 
-      useEffect(() => {
+    }, [closeModal]);
+    
+    useEffect(() => {
+        const getDirectors = () => {
+            setDirectorNames([]);
+            const url = `https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${process.env.REACT_APP_TMDB_KEY}&language=en-US`
+            fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+                if (!data.errors) {
+                    const crew = data.crew;
+                    const directors = crew.filter((crew) => crew.job === 'Director');
+                    let directorNames = [];
+                    directors.forEach(director => directorNames.push(director.name));
+                    setDirectorNames(directorNames);
+                } else {
+                    return [];
+                } 
+            })
+        }
         getDirectors();
     }, [movie])
     return (
         <StyledModal>
             <div className="modal" role="dialog">
-                <div class="modal-header">
+                <div className="modal-header">
                     <MovieControls movie={movie} closeModal={closeModal}></MovieControls>
                     <img className="close" src={close} onClick={closeModal}></img>
                     <div className="image-wrapper">

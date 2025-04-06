@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import styled, { ThemeProvider } from "styled-components"; 
+import React, { useContext } from "react";
+import styled from "styled-components"; 
 import { GlobalContext } from "../context/GlobalState";
 import { useLocation } from "react-router-dom";
 
